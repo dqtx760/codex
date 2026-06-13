@@ -6,279 +6,158 @@
     <title>Codex完全指南 | AI编程实战手册</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dim: rgba(99, 102, 241, 0.1);
+            --primary: #8b5cf6;
+            --primary-light: #a78bfa;
             --accent: #06b6d4;
-            --accent-dim: rgba(6, 182, 212, 0.1);
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --bg-void: #09090b;
-            --bg-deep: #0f0f12;
-            --bg-surface: #18181b;
-            --bg-elevated: #27272a;
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(255, 255, 255, 0.15);
+            --bg: #09090b;
+            --bg-card: #18181b;
+            --text: #fafafa;
+            --text-dim: #a1a1aa;
+            --border: rgba(255,255,255,0.08);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg-void);
-            color: var(--text-primary);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        /* ============ 背景 ============ */
-        .bg {
+        /* 顶部导航 */
+        .topnav {
             position: fixed;
-            inset: 0;
-            background: 
-                radial-gradient(ellipse 50% 40% at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 100%),
-                radial-gradient(ellipse 40% 50% at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 100%);
-            pointer-events: none;
-        }
-
-        /* ============ 侧边栏 ============ */
-        .sidebar {
-            position: fixed;
-            left: 0; top: 0;
-            width: 280px;
-            height: 100vh;
-            background: rgba(15, 15, 18, 0.95);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            z-index: 100;
+            top: 0; left: 0; right: 0;
+            height: 60px;
+            background: rgba(9,9,11,0.8);
             backdrop-filter: blur(20px);
-        }
-
-        .sidebar-header {
-            padding: 1.75rem 1.5rem;
             border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 1000;
         }
 
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1rem;
-            color: white;
-        }
-
-        .logo-text {
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--text-primary);
-        }
-
-        .logo-sub {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.1rem;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem 0.75rem;
-        }
-
-        .sidebar-nav::-webkit-scrollbar { width: 4px; }
-        .sidebar-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-        .nav-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .nav-label {
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            padding: 0 0.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-link {
+        .topnav-logo {
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            padding: 0.5rem 0.75rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .nav-link:hover {
-            color: var(--text-primary);
-            background: var(--bg-elevated);
-        }
-
-        .nav-link.active {
-            color: var(--primary-light);
-            background: var(--primary-dim);
-        }
-
-        .nav-link::before {
-            content: '';
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: currentColor;
-            opacity: 0.5;
-        }
-
-        .nav-link.active::before {
-            opacity: 1;
-            box-shadow: 0 0 8px var(--primary);
-        }
-
-        .sidebar-footer {
-            padding: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-btn {
-            width: 100%;
-            padding: 0.6rem 1rem;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .footer-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary-light);
-            background: var(--primary-dim);
-        }
-
-        /* ============ 弹窗 ============ */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            transform: scale(0.95);
-            transition: transform 0.3s;
-            max-width: 300px;
-        }
-
-        .modal-overlay.show .modal {
-            transform: scale(1);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem; right: 1rem;
-            width: 32px; height: 32px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-
-        .modal-title {
-            font-size: 1.1rem;
             font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
 
-        .modal-desc {
+        .topnav-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 1.25rem;
+            font-weight: 700;
+            color: white;
         }
 
-        .modal-qr {
-            width: 180px;
-            height: 180px;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 1px solid var(--border);
-            margin-bottom: 1rem;
+        .topnav-links {
+            display: flex;
+            gap: 1.5rem;
         }
 
-        .modal-hint {
-            font-size: 0.75rem;
-            color: var(--accent);
+        .topnav-link {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s;
         }
 
-        /* ============ 主内容 ============ */
-        .main {
-            margin-left: 280px;
+        .topnav-link:hover {
+            color: var(--text);
+        }
+
+        .topnav-cta {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .topnav-cta:hover {
+            background: var(--primary-light);
+        }
+
+        /* 章节 */
+        .slide {
             min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5rem 2rem;
+            position: relative;
         }
 
-        .content {
-            max-width: 800px;
+        .slide-inner {
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 0 3rem;
+            width: 100%;
         }
 
-        /* Hero */
-        .hero {
-            padding: 5rem 0 4rem;
+        .slide-num {
+            font-size: 6rem;
+            font-weight: 800;
+            color: var(--primary);
+            opacity: 0.15;
+            line-height: 1;
+            margin-bottom: -1rem;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .slide-desc {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* Hero 特殊样式 */
+        .hero-slide {
             text-align: center;
+            background: 
+                radial-gradient(ellipse 60% 40% at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 100%),
+                var(--bg);
+        }
+
+        .hero-slide .slide-num {
+            display: none;
+        }
+
+        .hero-slide .slide-title {
+            font-size: 4.5rem;
+            background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-badge {
@@ -286,77 +165,47 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.4rem 1rem;
-            background: var(--primary-dim);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(139,92,246,0.1);
+            border: 1px solid rgba(139,92,246,0.3);
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--primary-light);
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-desc {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 500px;
-            margin: 0 auto 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .hero-stats {
             display: flex;
+            gap: 4rem;
+            margin-top: 3rem;
             justify-content: center;
-            gap: 3rem;
-            margin-bottom: 2.5rem;
         }
 
-        .stat {
+        .hero-stat {
             text-align: center;
         }
 
-        .stat-value {
-            font-size: 1.75rem;
+        .hero-stat-value {
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary-light);
         }
 
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
             margin-top: 0.25rem;
         }
 
         .hero-actions {
             display: flex;
-            justify-content: center;
             gap: 1rem;
+            justify-content: center;
+            margin-top: 2.5rem;
         }
 
         .btn {
-            padding: 0.75rem 1.75rem;
-            font-size: 0.9rem;
+            padding: 0.85rem 2rem;
+            font-size: 1rem;
             font-weight: 500;
             text-decoration: none;
             border-radius: 8px;
@@ -371,67 +220,44 @@
         .btn-primary:hover {
             background: var(--primary-light);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 30px rgba(139,92,246,0.3);
         }
 
         .btn-ghost {
             background: transparent;
-            color: var(--text-secondary);
+            color: var(--text-dim);
             border: 1px solid var(--border);
         }
 
         .btn-ghost:hover {
-            border-color: var(--border-hover);
-            color: var(--text-primary);
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text);
         }
 
-        /* 章节 */
-        .section {
-            margin-bottom: 3rem;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section:last-child {
-            border-bottom: none;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
+        /* 内容卡片 */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-num {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            opacity: 0.3;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+            margin-top: 2rem;
         }
 
         .card {
-            background: var(--bg-surface);
+            background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .card:hover {
-            border-color: var(--border-hover);
+            border-color: rgba(139,92,246,0.3);
+            transform: translateY(-4px);
         }
 
         .card h3 {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            color: var(--text-primary);
             margin-bottom: 0.75rem;
             display: flex;
             align-items: center;
@@ -446,29 +272,23 @@
             border-radius: 2px;
         }
 
-        .card p {
+        .card p, .card li {
             font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-        }
-
-        .card p:last-child {
-            margin-bottom: 0;
+            color: var(--text-dim);
+            line-height: 1.7;
         }
 
         .card ul, .card ol {
             padding-left: 1.25rem;
-            margin: 0.75rem 0;
+            margin-top: 0.5rem;
         }
 
         .card li {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.3rem;
         }
 
         .card strong {
-            color: var(--text-primary);
+            color: var(--text);
         }
 
         .card a {
@@ -476,25 +296,21 @@
             text-decoration: none;
         }
 
-        .card a:hover {
-            text-decoration: underline;
-        }
-
         /* 表格 */
         .table-wrap {
             overflow-x: auto;
-            margin: 1rem 0;
+            margin-top: 1rem;
         }
 
         .table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .table th {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
+            background: var(--bg-card);
+            color: var(--text);
             font-weight: 600;
             text-align: left;
             padding: 0.75rem 1rem;
@@ -504,19 +320,15 @@
         .table td {
             padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-
-        .table tbody tr:hover td {
-            background: var(--bg-elevated);
+            color: var(--text-dim);
         }
 
         /* 代码块 */
         .code-block {
-            background: var(--bg-deep);
+            background: #0f0f12;
             border: 1px solid var(--border);
             border-radius: 10px;
-            margin: 1rem 0;
+            margin-top: 1rem;
             overflow: hidden;
         }
 
@@ -525,25 +337,24 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.5rem 1rem;
-            background: var(--bg-surface);
+            background: var(--bg-card);
             border-bottom: 1px solid var(--border);
         }
 
         .code-lang {
-            font-size: 0.7rem;
-            color: var(--text-muted);
+            font-size: 0.75rem;
+            color: var(--text-dim);
             font-family: 'Fira Code', monospace;
         }
 
         .code-copy {
             font-size: 0.7rem;
-            color: var(--text-muted);
+            color: var(--text-dim);
             background: none;
             border: 1px solid var(--border);
             padding: 0.2rem 0.6rem;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .code-copy:hover {
@@ -559,7 +370,7 @@
         .code-body code {
             font-family: 'Fira Code', monospace;
             font-size: 0.85rem;
-            color: var(--text-primary);
+            color: var(--text);
             line-height: 1.7;
         }
 
@@ -568,33 +379,23 @@
             display: flex;
             gap: 0.75rem;
             padding: 1rem;
-            background: var(--accent-dim);
+            background: rgba(6,182,212,0.08);
             border-left: 3px solid var(--accent);
             border-radius: 0 8px 8px 0;
-            margin: 1rem 0;
+            margin-top: 1rem;
         }
 
-        .tip-icon {
-            color: var(--accent);
-            font-size: 1rem;
-        }
-
-        .tip-content {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .tip-content strong {
-            color: var(--accent);
-        }
+        .tip-icon { color: var(--accent); }
+        .tip-content { font-size: 0.9rem; color: var(--text-dim); }
+        .tip-content strong { color: var(--accent); }
 
         /* 高亮框 */
         .highlight {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(6, 182, 212, 0.05));
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(6,182,212,0.05));
+            border: 1px solid rgba(139,92,246,0.2);
             border-radius: 12px;
             padding: 1.75rem;
-            margin: 1.5rem 0;
+            margin-top: 1.5rem;
         }
 
         .highlight-title {
@@ -604,122 +405,121 @@
             margin-bottom: 1rem;
         }
 
-        .highlight p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
+        .highlight p { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+        .highlight ol, .highlight ul { padding-left: 1.25rem; margin: 0.75rem 0; }
+        .highlight li { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.3rem; }
 
-        .highlight ol, .highlight ul {
-            padding-left: 1.25rem;
-            margin: 0.75rem 0;
-        }
-
-        .highlight li {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.3rem;
-        }
-
-        /* 返回顶部 */
-        .to-top {
+        /* 右侧指示器 */
+        .indicator {
             position: fixed;
-            bottom: 2rem;
             right: 2rem;
-            width: 44px;
-            height: 44px;
-            background: var(--bg-surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-muted);
-            font-size: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator-dot:hover {
+            background: var(--text-dim);
+        }
+
+        .indicator-dot.active {
+            background: var(--primary);
+            box-shadow: 0 0 12px var(--primary);
+        }
+
+        /* 弹窗 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s;
         }
 
-        .to-top.visible {
-            opacity: 1;
-            visibility: visible;
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            max-width: 300px;
         }
 
-        .to-top:hover {
-            border-color: var(--primary);
-            color: var(--primary-light);
+        .modal-close {
+            position: absolute;
+            top: 0.75rem; right: 0.75rem;
+            width: 28px; height: 28px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text-dim);
+            cursor: pointer;
         }
 
-        /* Footer */
+        .modal-close:hover { border-color: var(--text-dim); color: var(--text); }
+
+        .modal-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .modal-desc { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1rem; }
+
+        .modal-qr {
+            width: 160px;
+            height: 160px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-hint { font-size: 0.75rem; color: var(--accent); }
+
+        /* 页脚 */
         .footer {
-            margin-top: 4rem;
-            padding: 3rem 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-inner {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 3rem;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .footer-brand {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        .footer-col-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary-light);
-        }
-
-        .footer-bottom {
-            max-width: 800px;
-            margin: 2rem auto 0;
-            padding: 1.5rem 3rem 0;
+            padding: 4rem 2rem;
             border-top: 1px solid var(--border);
             text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .topnav-links { display: none; }
+            .hero-slide .slide-title { font-size: 2.5rem; }
+            .slide-title { font-size: 2rem; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .indicator { display: none; }
+            .cards { grid-template-columns: 1fr; }
         }
 
         /* 加载动画 */
         .loader {
             position: fixed;
             inset: 0;
-            background: var(--bg-void);
+            background: var(--bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -727,90 +527,43 @@
             transition: opacity 0.4s, visibility 0.4s;
         }
 
-        .loader.done {
-            opacity: 0;
-            visibility: hidden;
-        }
+        .loader.done { opacity: 0; visibility: hidden; }
 
         .loader-spinner {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             border: 3px solid var(--border);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* 响应式 */
-        @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); }
-            .main { margin-left: 0; }
-            .content { padding: 0 1.5rem; }
-            .footer-inner { padding: 0 1.5rem; grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2rem; }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="bg"></div>
+    <div class="loader" id="loader"><div class="loader-spinner"></div></div>
 
-    <div class="loader" id="loader">
-        <div class="loader-spinner"></div>
-    </div>
-
-    <!-- 侧边栏 -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <div class="logo-icon">C</div>
-                <div>
-                    <div class="logo-text">Codex Guide</div>
-                    <div class="logo-sub">AI编程实战手册</div>
-                </div>
-            </div>
+    <!-- 顶部导航 -->
+    <nav class="topnav">
+        <div class="topnav-logo">
+            <div class="topnav-logo-icon">C</div>
+            <span>Codex Guide</span>
         </div>
-
-        <nav class="sidebar-nav">
-            <div class="nav-group">
-                <div class="nav-label">基础篇</div>
-                <a href="#ch1" class="nav-link active">第一章 · 认识Codex</a>
-                <a href="#ch2" class="nav-link">第二章 · 安装准备</a>
-                <a href="#ch3" class="nav-link">第三章 · 界面导览</a>
-                <a href="#ch4" class="nav-link">第四章 · 核心流程</a>
-                <a href="#ch5" class="nav-link">第五章 · 高级技巧</a>
-                <a href="#ch6" class="nav-link">第六章 · 问题排查</a>
-            </div>
-            <div class="nav-group">
-                <div class="nav-label">进阶篇</div>
-                <a href="#ch7" class="nav-link">第七章 · 学习路线</a>
-                <a href="#ch8" class="nav-link">第八章 · 入口选择</a>
-                <a href="#ch9" class="nav-link">第九章 · 配置详解</a>
-                <a href="#ch10" class="nav-link">第十章 · 实战案例</a>
-                <a href="#ch11" class="nav-link">第十一章 · 最佳实践</a>
-            </div>
-            <div class="nav-group">
-                <div class="nav-label">扩展篇</div>
-                <a href="#ch12" class="nav-link">第十二章 · Windows排障</a>
-                <a href="#ch13" class="nav-link">第十三章 · CodexPlusPlus</a>
-                <a href="#ch14" class="nav-link">第十四章 · Computer Use</a>
-            </div>
-        </nav>
-
-        <div class="sidebar-footer">
-            <button class="footer-btn" onclick="document.getElementById('qrModal').classList.add('show')">
-                <span>💬</span>
-                <span>加入交流群</span>
-            </button>
+        <div class="topnav-links">
+            <a href="#s1" class="topnav-link">首页</a>
+            <a href="#s2" class="topnav-link">基础</a>
+            <a href="#s7" class="topnav-link">进阶</a>
+            <a href="#s12" class="topnav-link">扩展</a>
         </div>
-    </aside>
+        <button class="topnav-cta" onclick="document.getElementById('qrModal').classList.add('show')">加入群组</button>
+    </nav>
+
+    <!-- 右侧指示器 -->
+    <div class="indicator" id="indicator"></div>
 
     <!-- 二维码弹窗 -->
     <div class="modal-overlay" id="qrModal">
-        <div class="modal" style="position: relative;">
+        <div class="modal">
             <button class="modal-close" onclick="document.getElementById('qrModal').classList.remove('show')">✕</button>
             <div class="modal-title">加入学习交流群</div>
             <div class="modal-desc">获取提示词模板、实战案例、最新更新</div>
@@ -819,400 +572,422 @@
         </div>
     </div>
 
-    <!-- 主内容 -->
-    <main class="main">
-        <div class="content">
-            <!-- Hero -->
-            <section class="hero">
-                <div class="hero-badge">完全免费 · 持续更新</div>
-                <h1>Codex 完全指南</h1>
-                <p class="hero-desc">从零开始掌握AI编程助手，提升10倍开发效率</p>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <div class="stat-value">14</div>
-                        <div class="stat-label">章节内容</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">2h</div>
-                        <div class="stat-label">阅读时长</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">50+</div>
-                        <div class="stat-label">实战技巧</div>
-                    </div>
+    <!-- Hero -->
+    <section class="slide hero-slide" data-index="0">
+        <div class="slide-inner">
+            <div class="hero-badge">完全免费 · 持续更新</div>
+            <h1 class="slide-title">Codex 完全指南</h1>
+            <p class="slide-desc" style="margin: 0 auto;">从零开始掌握AI编程助手，提升10倍开发效率</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">14</div>
+                    <div class="hero-stat-label">章节内容</div>
                 </div>
-                <div class="hero-actions">
-                    <a href="#ch1" class="btn btn-primary">开始学习</a>
-                    <a href="https://github.com/openai/codex" target="_blank" class="btn btn-ghost">GitHub</a>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">2h</div>
+                    <div class="hero-stat-label">阅读时长</div>
                 </div>
-            </section>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">50+</div>
+                    <div class="hero-stat-label">实战技巧</div>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="#s2" class="btn btn-primary">开始学习</a>
+                <a href="https://github.com/openai/codex" target="_blank" class="btn btn-ghost">GitHub</a>
+            </div>
+        </div>
+    </section>
 
-            <!-- 第一章 -->
-            <section class="section" id="ch1">
-                <div class="section-header">
-                    <span class="section-num">01</span>
-                    <h2 class="section-title">认识 Codex</h2>
+    <!-- 基础篇 -->
+    <section class="slide" id="s2" data-index="1">
+        <div class="slide-inner">
+            <div class="slide-num">01</div>
+            <h2 class="slide-title">认识 Codex</h2>
+            <p class="slide-desc">Codex 是 OpenAI 推出的AI编程助手，能够理解整个代码库，独立完成复杂任务。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>多代理并行</h3>
+                    <p>同时处理多个任务，效率倍增。一个代理重构代码，另一个修复bug，互不干扰。</p>
                 </div>
                 <div class="card">
-                    <h3>什么是 Codex</h3>
-                    <p>Codex 是 OpenAI 推出的AI编程助手，能够理解你的整个代码库，独立完成复杂的编程任务。</p>
-                    <p><strong>核心能力</strong>：</p>
-                    <ul>
-                        <li><strong>多代理并行</strong>：同时处理多个任务，效率倍增</li>
-                        <li><strong>代码库理解</strong>：读懂整个项目，而非单个文件</li>
-                        <li><strong>任务执行</strong>：从需求到交付的完整闭环</li>
-                    </ul>
+                    <h3>代码库理解</h3>
+                    <p>读懂整个项目结构，而非单个文件。理解依赖关系、代码风格和业务逻辑。</p>
                 </div>
                 <div class="card">
-                    <h3>与传统工具对比</h3>
-                    <div class="table-wrap">
-                        <table class="table">
-                            <thead><tr><th>特性</th><th>传统工具</th><th>Codex</th></tr></thead>
-                            <tbody>
-                                <tr><td>工作方式</td><td>单次交互</td><td>多步骤任务</td></tr>
-                                <tr><td>上下文</td><td>当前文件</td><td>整个代码库</td></tr>
-                                <tr><td>输出</td><td>代码片段</td><td>完整PR</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <h3>任务执行</h3>
+                    <p>从需求到交付的完整闭环。自动修改代码、运行测试、生成PR。</p>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <!-- 第二章 -->
-            <section class="section" id="ch2">
-                <div class="section-header">
-                    <span class="section-num">02</span>
-                    <h2 class="section-title">安装准备</h2>
-                </div>
+    <section class="slide" id="s3" data-index="2">
+        <div class="slide-inner">
+            <div class="slide-num">02</div>
+            <h2 class="slide-title">安装准备</h2>
+            <div class="cards">
                 <div class="card">
                     <h3>账号要求</h3>
-                    <p>需要 ChatGPT Plus 或 Pro 账号才能使用完整功能。</p>
+                    <p>需要 ChatGPT Plus 或 Pro 账号。推荐使用 Pro 获得完整功能。</p>
                 </div>
                 <div class="card">
-                    <h3>安装方式</h3>
-                    <p><strong>网页版</strong>：访问 <a href="https://chatgpt.com/codex">chatgpt.com/codex</a>，无需安装</p>
-                    <p><strong>桌面应用</strong>：从 OpenAI 官网下载安装包</p>
-                    <p><strong>命令行</strong>：npm install -g @openai/codex</p>
-                </div>
-            </section>
-
-            <!-- 第三章 -->
-            <section class="section" id="ch3">
-                <div class="section-header">
-                    <span class="section-num">03</span>
-                    <h2 class="section-title">界面导览</h2>
+                    <h3>网页版</h3>
+                    <p>访问 <a href="https://chatgpt.com/codex">chatgpt.com/codex</a>，无需安装，立即开始。</p>
                 </div>
                 <div class="card">
-                    <h3>三大区域</h3>
-                    <ul>
-                        <li><strong>侧边栏</strong>：管理所有任务线程</li>
-                        <li><strong>主工作区</strong>：查看任务进度和结果</li>
-                        <li><strong>审查面板</strong>：检查代码变更</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- 第四章 -->
-            <section class="section" id="ch4">
-                <div class="section-header">
-                    <span class="section-num">04</span>
-                    <h2 class="section-title">核心流程</h2>
-                </div>
-                <div class="card">
-                    <h3>四步工作法</h3>
-                    <ol>
-                        <li><strong>规划</strong>：明确目标、分析现状、制定方案</li>
-                        <li><strong>委派</strong>：提供清晰的任务描述</li>
-                        <li><strong>验证</strong>：检查代码变更和测试结果</li>
-                        <li><strong>审查</strong>：确认无误后合并</li>
-                    </ol>
-                </div>
-                <div class="card">
-                    <h3>任务描述模板</h3>
+                    <h3>命令行安装</h3>
                     <div class="code-block">
                         <div class="code-header">
-                            <span class="code-lang">prompt</span>
+                            <span class="code-lang">bash</span>
                             <button class="code-copy" onclick="copyCode(this)">复制</button>
                         </div>
-                        <div class="code-body"><code>目标：[要做什么]
-
-上下文：[相关文件和背景]
-
-约束：[技术限制]
-
-验证：[如何确认完成]</code></div>
+                        <div class="code-body"><code>npm install -g @openai/codex</code></div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
-            <!-- 第五章 -->
-            <section class="section" id="ch5">
-                <div class="section-header">
-                    <span class="section-num">05</span>
-                    <h2 class="section-title">高级技巧</h2>
+    <section class="slide" id="s4" data-index="3">
+        <div class="slide-inner">
+            <div class="slide-num">03</div>
+            <h2 class="slide-title">界面导览</h2>
+            <p class="slide-desc">Codex 界面分为三大区域，各有分工。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>侧边栏</h3>
+                    <p>管理所有任务线程。创建新任务、切换任务、查看状态。</p>
                 </div>
                 <div class="card">
-                    <h3>AGENTS.md 项目规则</h3>
-                    <p>在项目根目录创建 AGENTS.md 文件，定义代码规范、测试命令等，让 Codex 始终遵循你的规则。</p>
+                    <h3>主工作区</h3>
+                    <p>查看任务进度、代码变更、测试结果。核心操作区域。</p>
+                </div>
+                <div class="card">
+                    <h3>审查面板</h3>
+                    <p>检查代码变更，支持并排对比。确认无误后合并。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s5" data-index="4">
+        <div class="slide-inner">
+            <div class="slide-num">04</div>
+            <h2 class="slide-title">核心流程</h2>
+            <p class="slide-desc">掌握四步工作法，让 Codex 成为你的得力助手。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>1. 规划</h3>
+                    <p>明确目标、分析现状、制定方案。好的计划是成功的一半。</p>
+                </div>
+                <div class="card">
+                    <h3>2. 委派</h3>
+                    <p>提供清晰的任务描述。包括目标、上下文、约束、验证标准。</p>
+                </div>
+                <div class="card">
+                    <h3>3. 验证</h3>
+                    <p>检查代码变更和测试结果。确保符合预期。</p>
+                </div>
+                <div class="card">
+                    <h3>4. 审查</h3>
+                    <p>确认无误后合并。记录过程，便于复盘。</p>
+                </div>
+            </div>
+            <div class="code-block" style="margin-top: 1.5rem;">
+                <div class="code-header">
+                    <span class="code-lang">prompt</span>
+                    <button class="code-copy" onclick="copyCode(this)">复制</button>
+                </div>
+                <div class="code-body"><code>目标：[要做什么]
+上下文：[相关文件和背景]
+约束：[技术限制]
+验证：[如何确认完成]</code></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s6" data-index="5">
+        <div class="slide-inner">
+            <div class="slide-num">05</div>
+            <h2 class="slide-title">高级技巧</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>AGENTS.md</h3>
+                    <p>在项目根目录创建规则文件，定义代码规范、测试命令等。Codex 会自动遵循。</p>
                 </div>
                 <div class="card">
                     <h3>技能复用</h3>
-                    <p>将常用任务打包为技能，一键复用，保持一致性。</p>
-                </div>
-            </section>
-
-            <!-- 第六章 -->
-            <section class="section" id="ch6">
-                <div class="section-header">
-                    <span class="section-num">06</span>
-                    <h2 class="section-title">问题排查</h2>
+                    <p>将常用任务打包为技能，一键复用。保持一致性，提高效率。</p>
                 </div>
                 <div class="card">
-                    <h3>常见问题</h3>
-                    <ul>
-                        <li><strong>启动失败</strong>：删除配置文件夹，重新登录</li>
-                        <li><strong>登录循环</strong>：清除缓存，检查账号权限</li>
-                        <li><strong>网络错误</strong>：检查代理设置，确认网络连接</li>
-                    </ul>
+                    <h3>并行任务</h3>
+                    <p>利用多线程同时处理多个任务。每个任务独立工作，互不干扰。</p>
                 </div>
-            </section>
-
-            <!-- 第七章 -->
-            <section class="section" id="ch7">
-                <div class="section-header">
-                    <span class="section-num">07</span>
-                    <h2 class="section-title">学习路线</h2>
-                </div>
-                <div class="card">
-                    <h3>四阶段进阶</h3>
-                    <div class="table-wrap">
-                        <table class="table">
-                            <thead><tr><th>阶段</th><th>目标</th><th>标准</th></tr></thead>
-                            <tbody>
-                                <tr><td>入门</td><td>完成简单任务</td><td>走完完整流程</td></tr>
-                                <tr><td>进阶</td><td>建立工作习惯</td><td>清晰表达需求</td></tr>
-                                <tr><td>工程化</td><td>融入开发流程</td><td>有记录和测试</td></tr>
-                                <tr><td>团队化</td><td>建立团队规范</td><td>有规则和案例库</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 第八章 -->
-            <section class="section" id="ch8">
-                <div class="section-header">
-                    <span class="section-num">08</span>
-                    <h2 class="section-title">入口选择</h2>
-                </div>
-                <div class="card">
-                    <h3>四大入口</h3>
-                    <div class="table-wrap">
-                        <table class="table">
-                            <thead><tr><th>入口</th><th>特点</th><th>适合场景</th></tr></thead>
-                            <tbody>
-                                <tr><td>命令行</td><td>轻量快速</td><td>快速修改、脚本</td></tr>
-                                <tr><td>桌面应用</td><td>功能完整</td><td>复杂任务、多代理</td></tr>
-                                <tr><td>云端</td><td>无需本地环境</td><td>长任务、团队协作</td></tr>
-                                <tr><td>编辑器插件</td><td>无缝集成</td><td>局部修改、审查</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 第九章 -->
-            <section class="section" id="ch9">
-                <div class="section-header">
-                    <span class="section-num">09</span>
-                    <h2 class="section-title">配置详解</h2>
-                </div>
-                <div class="card">
-                    <h3>四层配置</h3>
-                    <ul>
-                        <li><strong>项目级</strong>：AGENTS.md 文件</li>
-                        <li><strong>个人级</strong>：config.toml 配置</li>
-                        <li><strong>扩展级</strong>：Skills、MCP</li>
-                        <li><strong>安全级</strong>：沙箱和审批</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- 第十章 -->
-            <section class="section" id="ch10">
-                <div class="section-header">
-                    <span class="section-num">10</span>
-                    <h2 class="section-title">实战案例</h2>
-                </div>
-                <div class="card">
-                    <h3>应用场景</h3>
-                    <div class="table-wrap">
-                        <table class="table">
-                            <thead><tr><th>场景</th><th>示例</th><th>价值</th></tr></thead>
-                            <tbody>
-                                <tr><td>内容创作</td><td>生成文档、PPT</td><td>快速转化想法</td></tr>
-                                <tr><td>知识管理</td><td>整理笔记、建库</td><td>系统化信息</td></tr>
-                                <tr><td>流程自动化</td><td>浏览器、数据处理</td><td>减少重复工作</td></tr>
-                                <tr><td>运维支持</td><td>日志分析、排障</td><td>快速定位问题</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 第十一章 -->
-            <section class="section" id="ch11">
-                <div class="section-header">
-                    <span class="section-num">11</span>
-                    <h2 class="section-title">最佳实践</h2>
-                </div>
-                <div class="card">
-                    <h3>三条原则</h3>
-                    <ol>
-                        <li><strong>可验证</strong>：每个任务都有明确完成标准</li>
-                        <li><strong>可控性</strong>：从小范围开始，逐步深入</li>
-                        <li><strong>可复盘</strong>：记录过程和结果</li>
-                    </ol>
-                </div>
-            </section>
-
-            <!-- 第十二章 -->
-            <section class="section" id="ch12">
-                <div class="section-header">
-                    <span class="section-num">12</span>
-                    <h2 class="section-title">Windows 排障</h2>
-                </div>
-                <div class="card">
-                    <h3>常见问题</h3>
-                    <ul>
-                        <li><strong>启动报错 0xC0000022</strong> — 沙盒权限问题</li>
-                        <li><strong>文件系统错误</strong> — 应用商店组件异常</li>
-                        <li><strong>Reconnecting</strong> — 代理配置问题</li>
-                    </ul>
-                </div>
-                <div class="card" style="border-color: rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.03);">
-                    <h3>需要专业帮助？</h3>
-                    <p>复杂问题可能需要一对一诊断。扫码添加微信，获取远程协助。</p>
-                    <button class="btn btn-primary" style="margin-top: 0.75rem;" onclick="document.getElementById('qrModal').classList.add('show')">获取帮助</button>
-                </div>
-            </section>
-
-            <!-- 第十三章 -->
-            <section class="section" id="ch13">
-                <div class="section-header">
-                    <span class="section-num">13</span>
-                    <h2 class="section-title">CodexPlusPlus</h2>
-                </div>
-                <div class="card">
-                    <h3>增强工具</h3>
-                    <p><a href="https://github.com/BigPizzaV3/CodexPlusPlus">CodexPlusPlus</a>（17.8k Stars）是 Codex App 的增强工具。</p>
-                    <p><strong>核心功能</strong>：</p>
-                    <ul>
-                        <li><strong>中转注入</strong>：接入国产模型API</li>
-                        <li><strong>插件解锁</strong>：解锁被限制的功能</li>
-                        <li><strong>会话管理</strong>：删除、导出、移动</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>接入国产模型</h3>
-                    <p>通过中转注入，可以使用国产模型替代官方API，降低成本。</p>
-                    <div class="code-block">
-                        <div class="code-header">
-                            <span class="code-lang">配置步骤</span>
-                            <button class="code-copy" onclick="copyCode(this)">复制</button>
-                        </div>
-                        <div class="code-body"><code>1. 下载安装 CodexPlusPlus
-2. 打开管理工具 → 中转注入
-3. 添加 Base URL 和 API Key
-4. 应用配置并启动</code></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 第十四章 -->
-            <section class="section" id="ch14">
-                <div class="section-header">
-                    <span class="section-num">14</span>
-                    <h2 class="section-title">Computer Use</h2>
-                </div>
-                <div class="card">
-                    <h3>屏幕操控能力</h3>
-                    <p>Computer Use 让AI可以直接操作你的电脑——点击、打字、截图、浏览网页。</p>
-                    <p><strong>适用场景</strong>：</p>
-                    <ul>
-                        <li>重复性操作自动化</li>
-                        <li>软件测试</li>
-                        <li>网页信息采集</li>
-                        <li>跨应用数据传递</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>实战案例</h3>
-                    <p><strong>自动填表</strong>：AI读取Excel数据，自动填入OA系统</p>
-                    <p><strong>价格监控</strong>：定时检查竞品网站，记录价格变动</p>
-                    <p><strong>批量处理</strong>：给100张图片添加水印并调整尺寸</p>
-                </div>
-            </section>
+            </div>
         </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-inner">
-                <div>
-                    <div class="footer-brand">Codex 完全指南</div>
-                    <p class="footer-desc">完全免费开源，持续更新中。帮助你从零掌握AI编程助手。</p>
+    <section class="slide" id="s7" data-index="6">
+        <div class="slide-inner">
+            <div class="slide-num">06</div>
+            <h2 class="slide-title">问题排查</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>启动失败</h3>
+                    <p>删除配置文件夹（~/.codex），重新登录。通常能解决大部分问题。</p>
                 </div>
-                <div>
-                    <div class="footer-col-title">导航</div>
-                    <ul class="footer-links">
-                        <li><a href="#ch1">认识 Codex</a></li>
-                        <li><a href="#ch7">学习路线</a></li>
-                        <li><a href="#ch13">CodexPlusPlus</a></li>
-                    </ul>
+                <div class="card">
+                    <h3>登录循环</h3>
+                    <p>清除浏览器缓存，检查账号权限是否支持 Codex。</p>
                 </div>
-                <div>
-                    <div class="footer-col-title">资源</div>
-                    <ul class="footer-links">
-                        <li><a href="https://github.com/openai/codex" target="_blank">OpenAI Codex</a></li>
-                        <li><a href="https://github.com/BigPizzaV3/CodexPlusPlus" target="_blank">CodexPlusPlus</a></li>
-                        <li><a href="https://platform.openai.com/docs" target="_blank">官方文档</a></li>
-                    </ul>
+                <div class="card">
+                    <h3>网络错误</h3>
+                    <p>检查代理设置，确认网络连接正常。尝试切换网络环境。</p>
                 </div>
             </div>
-            <div class="footer-bottom">
-                仅供学习参考 · 最后更新：2026年6月
-            </div>
-        </footer>
-    </main>
+        </div>
+    </section>
 
-    <button class="to-top" id="toTop">↑</button>
+    <!-- 进阶篇 -->
+    <section class="slide" id="s8" data-index="7">
+        <div class="slide-inner">
+            <div class="slide-num">07</div>
+            <h2 class="slide-title">学习路线</h2>
+            <p class="slide-desc">四阶段进阶，从入门到精通。</p>
+            <div class="table-wrap">
+                <table class="table">
+                    <thead><tr><th>阶段</th><th>目标</th><th>验收标准</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>入门</strong></td><td>完成简单任务</td><td>走完完整流程</td></tr>
+                        <tr><td><strong>进阶</strong></td><td>建立工作习惯</td><td>清晰表达需求</td></tr>
+                        <tr><td><strong>工程化</strong></td><td>融入开发流程</td><td>有记录和测试</td></tr>
+                        <tr><td><strong>团队化</strong></td><td>建立团队规范</td><td>有规则和案例库</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s9" data-index="8">
+        <div class="slide-inner">
+            <div class="slide-num">08</div>
+            <h2 class="slide-title">入口选择</h2>
+            <p class="slide-desc">四大入口，各有所长。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>命令行</h3>
+                    <p>轻量快速，适合快速修改、运行脚本、排查问题。</p>
+                </div>
+                <div class="card">
+                    <h3>桌面应用</h3>
+                    <p>功能完整，适合复杂任务、多代理协作、技能管理。</p>
+                </div>
+                <div class="card">
+                    <h3>云端平台</h3>
+                    <p>无需本地环境，适合长任务、团队协作、后台运行。</p>
+                </div>
+                <div class="card">
+                    <h3>编辑器插件</h3>
+                    <p>无缝集成，适合局部修改、代码审查、即时问答。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s10" data-index="9">
+        <div class="slide-inner">
+            <div class="slide-num">09</div>
+            <h2 class="slide-title">配置详解</h2>
+            <p class="slide-desc">四层配置，从个人到团队。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>项目级</h3>
+                    <p>AGENTS.md 文件。定义项目特定的规则和约定。</p>
+                </div>
+                <div class="card">
+                    <h3>个人级</h3>
+                    <p>config.toml 配置。设置个人偏好和默认行为。</p>
+                </div>
+                <div class="card">
+                    <h3>扩展级</h3>
+                    <p>Skills、MCP。复用流程，连接外部工具。</p>
+                </div>
+                <div class="card">
+                    <h3>安全级</h3>
+                    <p>沙箱和审批。控制风险操作，保护敏感数据。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s11" data-index="10">
+        <div class="slide-inner">
+            <div class="slide-num">10</div>
+            <h2 class="slide-title">实战案例</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>内容创作</h3>
+                    <p>生成文档、PPT、架构图。快速将想法转化为可视化内容。</p>
+                </div>
+                <div class="card">
+                    <h3>知识管理</h3>
+                    <p>整理笔记、构建知识库。系统化组织和检索信息。</p>
+                </div>
+                <div class="card">
+                    <h3>流程自动化</h3>
+                    <p>浏览器操作、数据处理。减少重复性工作。</p>
+                </div>
+                <div class="card">
+                    <h3>运维支持</h3>
+                    <p>日志分析、问题排查。快速定位和解决问题。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s12" data-index="11">
+        <div class="slide-inner">
+            <div class="slide-num">11</div>
+            <h2 class="slide-title">最佳实践</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>可验证</h3>
+                    <p>每个任务都要有明确的完成标准。没有验证方式的任务，很难判断质量。</p>
+                </div>
+                <div class="card">
+                    <h3>可控性</h3>
+                    <p>从边缘功能开始，逐步深入核心。越靠近关键业务，越要小步推进。</p>
+                </div>
+                <div class="card">
+                    <h3>可复盘</h3>
+                    <p>记录每次操作的过程和结果。便于总结经验，持续改进。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 扩展篇 -->
+    <section class="slide" id="s13" data-index="12">
+        <div class="slide-inner">
+            <div class="slide-num">12</div>
+            <h2 class="slide-title">Windows 排障</h2>
+            <p class="slide-desc">Windows 用户常见问题及解决方案。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>启动报错 0xC0000022</h3>
+                    <p>沙盒权限问题。修改配置文件，切换为 unelevated 模式。</p>
+                </div>
+                <div class="card">
+                    <h3>文件系统错误</h3>
+                    <p>应用商店组件异常。重置 Windows Store 缓存，修复系统组件。</p>
+                </div>
+                <div class="card">
+                    <h3>Reconnecting</h3>
+                    <p>代理配置问题。设置环境变量，配置代理地址。</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <div class="highlight-title">需要专业帮助？</div>
+                <p>复杂问题可能需要一对一诊断。扫码添加微信，获取远程协助。</p>
+                <button class="btn btn-primary" style="margin-top: 0.75rem;" onclick="document.getElementById('qrModal').classList.add('show')">获取帮助</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s14" data-index="13">
+        <div class="slide-inner">
+            <div class="slide-num">13</div>
+            <h2 class="slide-title">CodexPlusPlus</h2>
+            <p class="slide-desc">17.8k Stars 的增强工具，解锁更多能力。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>中转注入</h3>
+                    <p>接入国产模型API，降低成本。支持多家中转服务商。</p>
+                </div>
+                <div class="card">
+                    <h3>插件解锁</h3>
+                    <p>解锁原生被限制的功能。使用更多插件扩展能力。</p>
+                </div>
+                <div class="card">
+                    <h3>会话管理</h3>
+                    <p>删除、导出、移动会话。更好地管理任务历史。</p>
+                </div>
+            </div>
+            <div class="code-block" style="margin-top: 1.5rem;">
+                <div class="code-header">
+                    <span class="code-lang">安装步骤</span>
+                    <button class="code-copy" onclick="copyCode(this)">复制</button>
+                </div>
+                <div class="code-body"><code>1. 从 GitHub Releases 下载安装包
+2. 安装后打开 Codex++ 管理工具
+3. 配置中转注入（Base URL + API Key）
+4. 启动 Codex++ 即可使用</code></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="s15" data-index="14">
+        <div class="slide-inner">
+            <div class="slide-num">14</div>
+            <h2 class="slide-title">Computer Use</h2>
+            <p class="slide-desc">让AI直接操控你的电脑，自动化重复工作。</p>
+            <div class="cards">
+                <div class="card">
+                    <h3>屏幕识别</h3>
+                    <p>理解屏幕上的UI元素，识别按钮、输入框、菜单等。</p>
+                </div>
+                <div class="card">
+                    <h3>鼠标操控</h3>
+                    <p>点击、拖拽、滚动。像真人一样操作电脑界面。</p>
+                </div>
+                <div class="card">
+                    <h3>浏览器操作</h3>
+                    <p>网页导航、表单填写、信息采集。自动化网页流程。</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <div class="highlight-title">实战案例</div>
+                <p><strong>自动填表</strong>：AI读取Excel数据，自动填入OA系统</p>
+                <p><strong>价格监控</strong>：定时检查竞品网站，记录价格变动</p>
+                <p><strong>批量处理</strong>：给100张图片添加水印并调整尺寸</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p class="footer-text">Codex 完全指南 · 仅供学习参考 · 最后更新：2026年6月</p>
+    </footer>
 
     <script>
         window.onload = () => {
             setTimeout(() => document.getElementById('loader').classList.add('done'), 500);
         };
 
-        // 导航
-        const sections = document.querySelectorAll('.section');
-        const navLinks = document.querySelectorAll('.nav-link');
+        // 生成指示器
+        const slides = document.querySelectorAll('.slide');
+        const indicator = document.getElementById('indicator');
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href?.startsWith('#')) {
-                    e.preventDefault();
-                    document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+        slides.forEach((slide, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'indicator-dot';
+            dot.onclick = () => slide.scrollIntoView({ behavior: 'smooth' });
+            indicator.appendChild(dot);
         });
 
+        const dots = indicator.querySelectorAll('.indicator-dot');
+
+        // 滚动监听
         window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(s => {
-                if (pageYOffset >= s.offsetTop - 200) current = s.id;
+            let current = 0;
+            slides.forEach((slide, i) => {
+                if (pageYOffset >= slide.offsetTop - window.innerHeight / 2) {
+                    current = i;
+                }
             });
-            navLinks.forEach(link => {
-                link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === current);
             });
         });
 
@@ -1224,13 +999,6 @@
                 setTimeout(() => btn.textContent = '复制', 1500);
             });
         }
-
-        // 返回顶部
-        const toTop = document.getElementById('toTop');
-        window.addEventListener('scroll', () => {
-            toTop.classList.toggle('visible', pageYOffset > 400);
-        });
-        toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
 </body>
 </html>
